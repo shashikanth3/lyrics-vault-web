@@ -3,5 +3,15 @@
     "api/upload-backup.js": {
       "maxDuration": 30
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/latest-backup.zip",
+      "destination": "https://mzzduydsougmrvlb.public.blob.vercel-storage.com/latest-backup.zip"
+    },
+    {
+      "source": "/backup-meta.json",
+      "destination": "https://mzzduydsougmrvlb.public.blob.vercel-storage.com/backup-meta.json"
+    }
+  ]
 }
