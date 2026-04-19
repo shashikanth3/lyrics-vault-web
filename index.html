@@ -184,15 +184,19 @@
   </div>
 
   <script>
-    // Optional: fetch backup metadata (e.g., last modified date) from a JSON file
-    fetch('/backup-meta.json')
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('backup-date').textContent = data.lastModified || 'Recently';
-      })
-      .catch(() => {
-        document.getElementById('backup-date').textContent = 'Recently';
-      });
-  </script>
+  // Fetch the latest backup URL and date
+  fetch('/backup-meta.json')
+    .then(res => res.json())
+    .then(data => {
+      const link = document.getElementById('backup-link');
+      link.href = data.url;
+      document.getElementById('backup-date').textContent = 
+        new Date(data.lastModified).toLocaleDateString();
+    })
+    .catch(err => {
+      console.warn('Could not load backup metadata, using default link.');
+      // Keep the default link (maybe a static fallback)
+    });
+</script>
 </body>
 </html>
