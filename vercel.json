@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/upload-backup.js": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/latest-backup.zip",
+      "destination": "https://your-blob-store-url/latest-backup.zip"
+    }
+  ]
+}
