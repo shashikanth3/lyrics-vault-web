@@ -3,200 +3,357 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lyrics Vault - Offline PDF Manager</title>
+  <title>Shyam Lyrics Vault</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700&display=swap" rel="stylesheet">
   <style>
+    /* ─── Design Tokens ─── */
+    :root {
+      --gold: #C9A84C;
+      --gold-dim: rgba(201,168,76,0.14);
+      --gold-hair: rgba(201,168,76,0.5);
+      --bg: #000000;
+      --card-start: #131313;
+      --card-end: #080808;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f5f5f5;
-      color: #202124;
+      background: var(--bg);
+      color: #888;
       line-height: 1.5;
+      overflow-x: hidden;
     }
+
+    /* ─── Top Bar Animation ─── */
+    .gold-top-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: var(--gold);
+      z-index: 20;
+      animation: topBarPulse 4.4s infinite ease-in-out;
+    }
+    @keyframes topBarPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
     .container {
-      max-width: 800px;
+      max-width: 600px;
       margin: 0 auto;
-      padding: 24px 16px;
+      padding-bottom: 48px;
     }
-    .app-header {
+
+    /* ─── Hero Section ─── */
+    .hero {
+      height: 62vh;
+      min-height: 450px;
       display: flex;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 32px;
-      background: white;
-      padding: 24px;
-      border-radius: 24px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .app-icon {
-      width: 96px;
-      height: 96px;
-      border-radius: 24px;
-      background: #4285F4;
-      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-size: 48px;
-      font-weight: bold;
+      position: relative;
+      overflow: hidden;
+      padding: 0 24px;
     }
-    .app-info h1 {
-      font-size: 28px;
-      margin-bottom: 8px;
+
+    .pulse-ring {
+      position: absolute;
+      border: 0.5px solid var(--gold-dim);
+      border-radius: 50%;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulseAnim 5.6s infinite ease-in-out;
+      pointer-events: none;
     }
-    .app-info .developer {
-      color: #5f6368;
-      margin-bottom: 4px;
+    .ring-1 { width: 300px; height: 300px; animation-delay: 0s; }
+    .ring-2 { width: 210px; height: 210px; animation-delay: 0.55s; }
+    .ring-3 { width: 120px; height: 120px; animation-delay: 1.1s; }
+
+    @keyframes pulseAnim {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+      50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.25; }
     }
-    .rating {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 8px;
+
+    .shield-wrap {
+      width: 68px; height: 68px;
+      border-radius: 20px;
+      border: 0.5px solid rgba(201,168,76,0.4);
+      background: rgba(10,10,10,0.96);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px; z-index: 2;
+      box-shadow: 0 8px 16px rgba(201,168,76,0.18);
+      animation: popIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
-    .stars { color: #fbbc04; letter-spacing: 2px; }
-    .download-card {
-      background: white;
-      border-radius: 24px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+    .hero-sacred { font-size: 10px; font-weight: 500; letter-spacing: 6px; color: #555; text-transform: uppercase; margin-bottom: 10px; z-index: 2; }
+    .hero-title-main { font-size: 48px; font-weight: 200; letter-spacing: 3px; line-height: 0.9; color: #ffffff; text-transform: uppercase; text-align: center; z-index: 2; }
+    .hero-vault { font-size: 18px; font-weight: 300; letter-spacing: 14px; color: var(--gold); text-transform: uppercase; margin-top: 8px; margin-left: 14px; z-index: 2; }
+    .hero-divider { width: 32px; height: 0.5px; background: rgba(201,168,76,0.65); margin: 22px 0 16px 0; z-index: 2; }
+    .hero-tagline { font-size: 12px; font-style: italic; letter-spacing: 2px; color: #444; font-weight: 300; z-index: 2; text-align: center; }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.6) rotate(-10deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
     }
-    .download-card h2 {
-      margin-bottom: 16px;
-      font-size: 20px;
+
+    /* ─── Section Intro ─── */
+    .section-intro {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0 20px; margin: 40px 0 10px 0;
     }
-    .meta-info {
-      display: flex;
-      gap: 24px;
-      margin: 16px 0;
-      color: #5f6368;
-      font-size: 14px;
+    .section-dot { width: 4px; height: 4px; border-radius: 2px; background: var(--gold); }
+    .section-label { font-size: 9px; letter-spacing: 4px; color: #555; text-transform: uppercase; font-weight: 600; }
+    .section-rule { flex: 1; height: 0.5px; background: var(--gold-hair); opacity: 0.3; }
+
+    /* ─── Premium Cards ─── */
+    .card-wrapper { margin: 0 16px 16px 16px; animation: slideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+
+    @keyframes slideUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
+
+    .card {
+      background: linear-gradient(180deg, var(--card-start), var(--card-end));
+      padding: 20px;
+      border-radius: 18px;
+      border: 0.5px solid rgba(255,255,255,0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    .card-top-accent { position: absolute; top: 0; left: 20%; right: 20%; height: 0.5px; background: var(--gold-hair); opacity: 0.5; }
+    .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .card-icon-box {
+      width: 30px; height: 30px; border-radius: 9px;
+      border: 0.5px solid rgba(201,168,76,0.25);
+      background: rgba(201,168,76,0.06);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold);
+    }
+    .card-title-text { font-size: 9px; font-weight: 600; letter-spacing: 3.5px; color: #666; text-transform: uppercase; }
+    .body-text { font-size: 13.5px; font-weight: 300; line-height: 23px; color: #888; letter-spacing: 0.2px; margin-bottom: 16px; }
+    
+    .meta-grid { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+    .meta-item {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.02); padding: 8px 12px;
+      border-radius: 10px; border: 0.5px solid rgba(255,255,255,0.04);
+    }
+    .meta-item span { font-size: 11px; color: #777; letter-spacing: 0.3px; font-weight: 400; }
+
+    /* ─── Identity Half Cards ─── */
+    .half-row { display: flex; gap: 10px; margin: 0 16px 16px 16px; }
+    .half-card {
+      flex: 1;
+      background: linear-gradient(180deg, var(--card-start), var(--card-end));
+      padding: 16px; border-radius: 18px;
+      border: 0.5px solid rgba(255,255,255,0.05);
+      position: relative; overflow: hidden; min-height: 110px;
+      animation: slideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .half-label-row { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+    .half-label-text { font-size: 8px; letter-spacing: 3px; color: #555; text-transform: uppercase; font-weight: 600; }
+    
+    .name-container { position: relative; height: 32px; display: flex; flex-direction: column; justify-content: center; margin-bottom: 4px; cursor: pointer; }
+    .half-value-gold { font-size: 26px; font-weight: 300; color: var(--gold); letter-spacing: 1px; line-height: 30px; white-space: nowrap; }
+    
+    /* Crossfade Animation Logic */
+    .name-short, .name-full { transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: absolute; left: 0; }
+    .name-full { opacity: 0; transform: translateY(10px); font-size: 19px; letter-spacing: 0; }
+    
+    .name-container:hover .name-short, .name-container:active .name-short { opacity: 0; transform: translateY(-8px); }
+    .name-container:hover .name-full, .name-container:active .name-full { opacity: 1; transform: translateY(0); }
+
+    .half-subtext { font-size: 10px; color: #444; margin-top: 6px; letter-spacing: 1px; font-weight: 400; }
+
+    /* ─── Buttons ─── */
     .btn {
-      display: inline-block;
-      background: #4285F4;
-      color: white;
-      padding: 14px 28px;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-right: 12px;
-      margin-bottom: 8px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: rgba(201,168,76,0.08); color: var(--gold);
+      padding: 14px 24px; border-radius: 12px; text-decoration: none;
+      font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+      border: 0.5px solid rgba(201,168,76,0.3); cursor: pointer; transition: all 0.3s ease;
     }
-    .btn:hover { background: #1a73e8; }
-    .btn-secondary {
-      background: #34A853;
-    }
-    .btn-secondary:hover { background: #0d652d; }
-    .btn-outline {
-      background: transparent;
-      border: 1px solid #dadce0;
-      color: #4285F4;
-    }
-    .btn-outline:hover {
-      background: #f1f3f4;
-    }
-    .screenshots {
-      display: flex;
-      gap: 16px;
-      overflow-x: auto;
-      padding: 8px 0;
-      margin-top: 24px;
-    }
-    .screenshot {
-      width: 160px;
-      height: 320px;
-      background: #e8eaed;
-      border-radius: 16px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #5f6368;
-    }
-    .footer {
-      text-align: center;
-      margin-top: 40px;
-      color: #5f6368;
-      font-size: 14px;
-    }
+    .btn:hover { background: rgba(201,168,76,0.15); transform: translateY(-2px); }
+    .btn svg { width: 14px; height: 14px; }
+    
+    .btn-secondary { background: transparent; border: 0.5px solid rgba(255,255,255,0.1); color: #bbb; }
+    .btn-secondary:hover { background: rgba(255,255,255,0.05); }
+
+    .warning-text { font-size: 11px; color: #555; margin-top: 14px; text-align: center; font-style: italic; }
+
+    /* ─── Footer ─── */
+    .footer { display: flex; flex-direction: column; align-items: center; padding: 44px 0 20px 0; }
+    .footer-line { width: 40px; height: 0.5px; background: rgba(201,168,76,0.15); margin: 14px 0 16px 0; }
+    .footer-main { font-size: 8.5px; letter-spacing: 4px; color: #333; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+    .footer-sub { font-size: 9px; letter-spacing: 2px; color: #2a2a2a; font-style: italic; font-weight: 300; }
   </style>
 </head>
 <body>
+  <div class="gold-top-bar"></div>
+
   <div class="container">
-    <!-- App Header -->
-    <div class="app-header">
-      <div class="app-icon">LV</div>
-      <div class="app-info">
-        <h1>SHYAM LYRICS VAULT</h1>
-        <div class="developer">SK Apps</div>
-        <div class="rating">
-          <span class="stars">★★★★★</span>
-          <span>4.8 • 1K+ downloads</span>
+    <div class="hero">
+      <div class="pulse-ring ring-1"></div>
+      <div class="pulse-ring ring-2"></div>
+      <div class="pulse-ring ring-3"></div>
+      
+      <div class="shield-wrap">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+      </div>
+
+      <div class="hero-sacred">Sacred Collection</div>
+      <div class="hero-title-main">Shyam<br>Lyrics</div>
+      <div class="hero-vault">VAULT</div>
+      <div class="hero-divider"></div>
+      <div class="hero-tagline">Your sacred lyrics, safely stored</div>
+    </div>
+
+    <div class="section-intro">
+      <div class="section-dot"></div>
+      <div class="section-label">INSTALLATION</div>
+      <div class="section-rule"></div>
+    </div>
+
+    <div class="card-wrapper delay-1">
+      <div class="card">
+        <div class="card-top-accent"></div>
+        <div class="card-header">
+          <div class="card-icon-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          </div>
+          <div class="card-title-text">ANDROID APPLICATION</div>
         </div>
+        
+        <p class="body-text">
+          Get the latest version of the Vault. A modern, offline-first reader for your collection.
+        </p>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <svg width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>v1.0.0</span>
+          </div>
+          <div class="meta-item">
+            <svg width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            <span>50 MB</span>
+          </div>
+        </div>
+
+        <a href="/downloads/app-release.apk" class="btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Download APK
+        </a>
+        <div class="warning-text">Ensure "Install from unknown sources" is enabled</div>
       </div>
     </div>
 
-    <!-- APK Download Card -->
-    <div class="download-card">
-      <h2>📱 Download APK</h2>
-      <p>Get the latest version of SHYAM LYRICS VAULT for Android.</p>
-      <div class="meta-info">
-        <span>Version 1.0.0</span>
-        <span>•</span>
-        <span>38 MB</span>
-        <span>•</span>
-        <span>Updated April 19, 2026</span>
-      </div>
-      <a href="/downloads/app-release.apk" class="btn">⬇ Download APK</a>
-      <p style="margin-top: 12px; font-size: 14px; color: #5f6368;">
-        ⚠️ You may need to enable "Install from unknown sources" in Settings.
-      </p>
+    <div class="section-intro">
+      <div class="section-dot"></div>
+      <div class="section-label">DATA VAULT</div>
+      <div class="section-rule"></div>
     </div>
 
-    <!-- Community Backup Card -->
-    <div class="download-card">
-      <h2>📦 DOWNLOAD AND IMPORT FILES</h2>
-      <p>Download the latest shared Files(ZIP file). Import it in the app to access all files.</p>
-      <div class="meta-info">
-        <span>Last updated: <span id="backup-date">Loading...</span></span>
+    <div class="card-wrapper delay-2">
+      <div class="card">
+        <div class="card-top-accent"></div>
+        <div class="card-header">
+          <div class="card-icon-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+          </div>
+          <div class="card-title-text">COMMUNITY FILES</div>
+        </div>
+
+        <p class="body-text">
+          Download the latest curated collection. Import this ZIP file directly into the app to access all sacred files offline.
+        </p>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <svg width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+            <span id="backup-date">Updated: Loading...</span>
+          </div>
+        </div>
+
+        <a id="backup-link" href="/latest-backup.zip" class="btn btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+          Download Files.Zip
+        </a>
+        <div class="warning-text">Maintained and updated by Shyam</div>
       </div>
-      <a id="backup-link" href="/latest-backup.zip" class="btn btn-secondary">⬇ Download Files.Zip</a>
-      <p style="margin-top: 12px; font-size: 14px; color: #5f6368;">
-        This Files.Zip is updated by the Shyam. THANK YOU!..
-      </p>
     </div>
 
-    <!-- Screenshots (optional) -->
-    <div class="screenshots">
-      <div class="screenshot">📄 Grid View</div>
-      <div class="screenshot">📂 Folders</div>
-      <div class="screenshot">🔍 Search</div>
+    <div class="section-intro">
+      <div class="section-dot"></div>
+      <div class="section-label">IDENTITY</div>
+      <div class="section-rule"></div>
+    </div>
+
+    <div class="half-row">
+      <div class="half-card delay-3">
+        <div class="card-top-accent"></div>
+        <div class="half-label-row">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <div class="half-label-text">CREATOR</div>
+        </div>
+        
+        <div class="name-container">
+          <div class="half-value-gold name-short">Sk</div>
+          <div class="half-value-gold name-full">Shashikanth ↗</div>
+        </div>
+        
+        <div class="half-subtext">Private use</div>
+      </div>
+
+      <div class="half-card delay-3" style="animation-delay: 0.35s;">
+        <div class="card-top-accent"></div>
+        <div class="half-label-row">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+          <div class="half-label-text">VERSION</div>
+        </div>
+        
+        <div class="name-container">
+          <div class="half-value-gold">1.0.0</div>
+        </div>
+        
+        <div class="half-subtext">Apr 2026</div>
+      </div>
     </div>
 
     <div class="footer">
-      © 2026 SK Apps • <a href="#">Privacy Policy</a>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#272727" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+      <div class="footer-line"></div>
+      <div class="footer-main">© 2026 SHYAM LYRICS VAULT</div>
+      <div class="footer-sub">CRAFTED WITH CARE BY SK</div>
     </div>
   </div>
 
   <script>
-  // Fetch the latest backup URL and date
-  fetch('/backup-meta.json')
-    .then(res => res.json())
-    .then(data => {
-      const link = document.getElementById('backup-link');
-      link.href = data.url;
-      document.getElementById('backup-date').textContent = 
-        new Date(data.lastModified).toLocaleDateString();
-    })
-    .catch(err => {
-      console.warn('Could not load backup metadata, using default link.');
-      // Keep the default link (maybe a static fallback)
-    });
-</script>
+    // Fetch the latest backup URL and date
+    fetch('/backup-meta.json')
+      .then(res => res.json())
+      .then(data => {
+        const link = document.getElementById('backup-link');
+        if(link && data.url) link.href = data.url;
+        
+        const dateEl = document.getElementById('backup-date');
+        if(dateEl && data.lastModified) {
+          dateEl.textContent = 'Updated: ' + new Date(data.lastModified).toLocaleDateString();
+        }
+      })
+      .catch(err => {
+        console.warn('Could not load backup metadata, using default link.');
+        const dateEl = document.getElementById('backup-date');
+        if(dateEl) dateEl.textContent = 'Updated: April 2026';
+      });
+  </script>
 </body>
 </html>
